@@ -1,0 +1,48 @@
+---
+
+- name: Requirements
+  apt:
+    pkg: borgbackup
+    state: latest
+
+- name: Backup group
+  group:
+    name: backup
+    state: present
+
+- name: Backup user
+  user:
+    name: backup
+    group: backup
+    state: present
+    shell: /bin/bash
+    createhome: yes
+    home: "{{ borg_home }}"
+
+- name: Directory permission
+  file:
+    path: "{{ item }}"
+    mode: 0700
+    owner: backup
+    group: backup
+    state: directory
+  with_items:
+    - "{{ borg_home }}"
+    - "{{ borg_home }}/.ssh"
+    - "{{ borg_home }}/repos"
+
+- name: Borg users
+  authorized_key:
+    user: backup
+    key: "{{ item.value }}"
+    key_options: 'command="cd {{ borg_home }}/repos/{{ item.key }};borg serve --restrict-to-path {{ borg_home }}/repos/{{ item.key }}",restrict'
+  with_dict: "{{ borg_users }}"
+
+- name: Borg users directory
+  file:
+    path: "{{ borg_home }}/repos/{{ item.key }}"
+    owner: backup
+    group: backup
+    mode: 0700
+    state: directory
+  with_dict: "{{ borg_users }}"

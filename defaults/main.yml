@@ -1,0 +1,4 @@
+---
+
+borg_home: /home/backup
+borg_users: []
