@@ -37,6 +37,8 @@
     key: "{{ item.value }}"
     key_options: 'command="cd {{ borg_home }}/repos/{{ item.key }};borg serve --restrict-to-path {{ borg_home }}/repos/{{ item.key }}",restrict'
   with_dict: "{{ borg_users }}"
+  loop_control:
+    label: "{{ item.key }}"
 
 - name: Borg users directory
   file:
@@ -46,3 +48,5 @@
     mode: 0700
     state: directory
   with_dict: "{{ borg_users }}"
+  loop_control:
+    label: "{{ item.key }}"
