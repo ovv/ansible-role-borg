@@ -2,8 +2,11 @@
 
 - name: Requirements
   apt:
-    pkg: borgbackup
+    pkg: "{{ item }}"
     state: latest
+  with_items:
+    - borgbackup
+    - fuse
 
 - name: Backup group
   group:
