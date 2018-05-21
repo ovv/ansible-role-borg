@@ -2,3 +2,4 @@
 
 borg_home: /home/backup
 borg_users: []
+borg_use_backports: False

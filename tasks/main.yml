@@ -1,12 +1,45 @@
 ---
 
+- name: Add backports repository
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.filename }}"
+  with_items:
+    - {repo: "deb http://ftp.debian.org/debian stretch-backports main", filename: backports}
+
 - name: Requirements
   apt:
     pkg: "{{ item }}"
     state: latest
   with_items:
-    - borgbackup
     - fuse
+
+- name: Add backports repository
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.filename }}"
+  with_items:
+    - {repo: "deb http://ftp.debian.org/debian stretch-backports main", filename: backports}
+  when: borg_use_backports
+
+- name: Install borg backup from backports
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    default_release: 'stretch-backports'
+  with_items:
+    - borgbackup
+  when: borg_use_backports
+
+- name: Install borg backup from backports
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  with_items:
+    - borgbackup
+  when: not borg_use_backports
 
 - name: Backup group
   group:
