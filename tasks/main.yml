@@ -70,11 +70,11 @@
 - name: Borg users
   authorized_key:
     user: backup
-    key: "{{ item.value }}"
-    key_options: 'command="cd {{ borg_home }}/repos/{{ item.key }};borg serve --restrict-to-path {{ borg_home }}/repos/{{ item.key }}",restrict'
-  with_dict: "{{ borg_users }}"
-  loop_control:
-    label: "{{ item.key }}"
+    key: "{{ item.1 }}"
+    key_options: 'command="cd {{ borg_home }}/repos/{{ item.0.name }};borg serve --restrict-to-path {{ borg_home }}/repos/{{ item.0.name }}",restrict'
+  with_subelements: 
+    - "{{ borg_users }}"
+    - keys
 
 - name: Borg users directory
   file:
