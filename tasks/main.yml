@@ -78,11 +78,11 @@
 
 - name: Borg users directory
   file:
-    path: "{{ borg_home }}/repos/{{ item.key }}"
+    path: "{{ borg_home }}/repos/{{ item.name }}"
     owner: backup
     group: backup
     mode: 0700
     state: directory
-  with_dict: "{{ borg_users }}"
+  with_items: "{{ borg_users }}"
   loop_control:
     label: "{{ item.key }}"
