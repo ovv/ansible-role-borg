@@ -85,4 +85,4 @@
     state: directory
   with_items: "{{ borg_users }}"
   loop_control:
-    label: "{{ item.key }}"
+    label: "{{ item.name }}"
