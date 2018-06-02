@@ -3,6 +3,8 @@
   vars:
     borg_home: /var/backup
     borg_users:
-      ovv: "{{ lookup('file', 'tests/id_rsa.pub') }}"
+      - name: ovv 
+        keys:
+          - "{{ lookup('file', 'tests/id_rsa.pub') }}"
   roles:
     - ansible-role-borg

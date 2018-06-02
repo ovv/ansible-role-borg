@@ -23,14 +23,25 @@ $ git submodule add -b master https://github.com/ovv/ansible-role-borg.git ovv.b
 Role Variables
 --------------
 
-* `borg_users`: Dict of users with username as key and the ssh key as value:
+* `borg_users`: Lift of users.
+    `name`: Username.
+    `keys`: List of the user public ssh keys.
 * `borg_home`: Path for the backup user home (defaul to `/home/backup`).
 
 Example Playbook
 ----------------
 
 ```yml
-
+---
+- hosts: localhost
+  vars:
+    borg_home: /var/backup
+    borg_users:
+      - name: ovv
+        keys:
+          - "{{ lookup('file', 'home/ovv/.ssh/id_rsa.pub') }}"
+  roles:
+    - ansible-role-borg
 ```
 
 License
