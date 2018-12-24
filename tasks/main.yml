@@ -10,10 +10,8 @@
 
 - name: Requirements
   apt:
-    pkg: "{{ item }}"
+    pkg: fuse
     state: latest
-  with_items:
-    - fuse
 
 - name: Add backports repository
   apt_repository:
@@ -26,19 +24,15 @@
 
 - name: Install borg backup from backports
   apt:
-    pkg: "{{ item }}"
+    pkg: borgbackup
     state: latest
     default_release: 'stretch-backports'
-  with_items:
-    - borgbackup
   when: borg_use_backports
 
-- name: Install borg backup from backports
+- name: Install borg backup
   apt:
-    pkg: "{{ item }}"
+    pkg: borgbackup
     state: latest
-  with_items:
-    - borgbackup
   when: not borg_use_backports
 
 - name: Backup group
