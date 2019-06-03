@@ -1,4 +1,4 @@
-  ---
+---
 
 - name: Add backports repository
   apt_repository:
