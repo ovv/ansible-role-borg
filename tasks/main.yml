@@ -1,4 +1,4 @@
----
+  ---
 
 - name: Add backports repository
   apt_repository:
@@ -20,20 +20,20 @@
     filename: "{{ item.filename }}"
   with_items:
     - {repo: "deb http://ftp.debian.org/debian stretch-backports main", filename: backports}
-  when: borg_use_backports
+  when: borg_use_backports | bool
 
 - name: Install borg backup from backports
   apt:
     pkg: borgbackup
     state: latest
     default_release: 'stretch-backports'
-  when: borg_use_backports
+  when: borg_use_backports | bool
 
 - name: Install borg backup
   apt:
     pkg: borgbackup
     state: latest
-  when: not borg_use_backports
+  when: not borg_use_backports | bool
 
 - name: Backup group
   group:
