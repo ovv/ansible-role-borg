@@ -11,7 +11,7 @@
 - name: Requirements
   apt:
     pkg: fuse
-    state: latest
+    state: present
 
 - name: Add backports repository
   apt_repository:
@@ -25,14 +25,14 @@
 - name: Install borg backup from backports
   apt:
     pkg: borgbackup
-    state: latest
+    state: present
     default_release: 'stretch-backports'
   when: borg_use_backports | bool
 
 - name: Install borg backup
   apt:
     pkg: borgbackup
-    state: latest
+    state: present
   when: not borg_use_backports | bool
 
 - name: Backup group
@@ -66,7 +66,7 @@
     user: backup
     key: "{{ item.1 }}"
     key_options: 'command="cd {{ borg_home }}/repos/{{ item.0.name }};borg serve --restrict-to-path {{ borg_home }}/repos/{{ item.0.name }}",restrict'
-  with_subelements: 
+  with_subelements:
     - "{{ borg_users }}"
     - keys
 
